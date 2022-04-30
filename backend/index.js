@@ -23,7 +23,8 @@ mongoose.connect(config.mongoURI, {
 })
 
 app.get('/', (req, res) => {
-        res.status(200).send("Simple bus transport API");
+        //res.status(200).send("Simple bus transport API");
+        res.status(200).send({code: 200, message: "Simple bus transport API"});
 });
 
 //! ----- ROUTES FOR USERS ------
