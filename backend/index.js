@@ -103,6 +103,7 @@ app.post('/api/rides/request', async(req, res) => {
         destinationLocation: req.body.destinationLocation,
         numberOfSits: req.body.numberOfSits,
         disabledPeople: req.body.disabledPeople,
+        cancelled: req.body.cancelled,
     });
     try {
         await ride.save();
@@ -130,7 +131,7 @@ app.get('/api/rides', async(req, res) => {
 app.get('/api/rides/:userID', async(req, res) => {
     try {
         const rides = await Ride.find({ passenger: req.params.userID });
-        console.log(rides);
+        // console.log(rides);
         res.json(rides);
     } catch (err) {
         //res.json({ message: err });
@@ -174,7 +175,6 @@ app.get('/api/buses/:userID', async(req, res) => {
     try {
         const buses = await Bus.find({ driver: req.params.userID });
         res.json(buses);
-
     } catch (err) {
         //res.json({ message: err });
         res.status(201).send({code: 400, message: "BusID doesn't exists", details: err});

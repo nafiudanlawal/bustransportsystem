@@ -103,6 +103,10 @@ const RideSchema = mongoose.Schema({
         type: Number,
         required: true,
     },
+    cancelled: {
+        type: String,
+        required: true,
+    },
 }, {
     timestamps: true
 });

@@ -9,6 +9,21 @@ import './MyRides.css';
 const MyRidesPage = (props) => {
   const [rides, setrides] = useState([]);
 
+  const handleCancel = (rideID) => {
+    // console.log("Ride ID: " + rideID);
+    // axios.post('/api/users/login', userInfo)
+    //   .then(res => {
+    //     // if (res.data.role === 'passenger') {
+    //     //   window.location.href = "/passenger";
+    //     // } else {
+    //     //   window.location.href = "/admin";
+    //     // }                
+    //   })
+    //   .catch((err) => {
+    //     console.log(err);
+    //   });
+  };
+  
   useEffect(() => {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
@@ -41,30 +56,57 @@ const MyRidesPage = (props) => {
             <th>Destination</th>
             <th>Action</th>
           </thead>  
-            {rides.map((ride, index) => (
-              <tr>
-                <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
-                <td className="Departure">{ride.departureLocation}</td>
-                <td className="Dest">{ride.destinationLocation}</td>
-                <td>
-                <Button
-                  label="Cancel"
-                  // onClick={handleLogin}
-                />
-                </td>
-              {/* <div className="Ride" key={index}>
-                <div className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</div>
-                <div className="Departure">{ride.departureLocation}</div>
-                <div className="Dest">{ride.destinationLocation}</div>
-              </div> */}
-              </tr>
-            ))}
+            {rides.map((ride, index) => {
+             if (new Date(ride.pickupTime) > Date.now() && ride.cancelled == 'no')
+             return (<tr>
+             <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
+             <td className="Departure">{ride.departureLocation}</td>
+             <td className="Dest">{ride.destinationLocation}</td>
+             <td>
+             <Button
+               label="Cancel"
+               onClick={handleCancel(ride._id)}
+             />
+             </td>
+            </tr>)
+            else
+            {
+              if (ride.cancelled == 'yes') {
+                return (<tr>
+                  <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
+                  <td className="Departure">{ride.departureLocation}</td>
+                  <td className="Dest">{ride.destinationLocation}</td>
+                  <td>Cancelled</td>
+                 </tr>)
+              } else {
+                return (<tr>
+                  <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
+                  <td className="Departure">{ride.departureLocation}</td>
+                  <td className="Dest">{ride.destinationLocation}</td>
+                  <td>N/A</td>
+                 </tr>)
+              }
+            } 
+            }  
+            )}
         </table>    
       </div>
     </div>
   )
 }
-
+// {rides.map((ride, index) => (
+//   <tr>
+//     <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
+//     <td className="Departure">{ride.departureLocation}</td>
+//     <td className="Dest">{ride.destinationLocation}</td>
+//     <td>
+//     <Button
+//       label="Cancel"
+//       // onClick={handleLogin}
+//     />
+//     </td>
+//   </tr>
+// ))}
 const mapStateToProps = (state) => (
   { user: state.user }
 );
