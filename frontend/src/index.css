@@ -69,13 +69,13 @@ header div {
 }
 
 .AlternativeLink {
-  color: #000;
+  color: rgb(8, 0, 0);
 }
 
 .AlternativeLink a {
   text-decoration: none;
   border-bottom: 1px solid #ffffff;
-  color: #f22a4f;
+  color: #0c0003;
   font-weight: bold;
 }
 
