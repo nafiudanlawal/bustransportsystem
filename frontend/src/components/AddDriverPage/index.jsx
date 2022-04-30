@@ -42,9 +42,21 @@ const AddDriverPage = (props) => {
       address,
       profilePicture: null
     }
-    
-    if (!userInfo.firstName || !userInfo.lastName || !userInfo.address || !userInfo.telephone ) {
-      setError('All fields are required');
+    if (!userInfo.firstName) {
+      setError('First name is required');
+      return;
+    }
+    if (!userInfo.lastName) {
+      setError('Last name is required');
+      return;
+    }
+
+    if (!userInfo.telephone) {
+      setError('Telephone is required');
+      return;
+    }
+    if (!userInfo.address) {
+      setError('Address is required');
       return;
     }
 

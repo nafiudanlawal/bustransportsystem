@@ -41,9 +41,13 @@ const ZonesPage = (props) => {
           routes: trimmed(routes)
         }
     
-        if (!zoneInfo.zoneName || !zoneInfo.routes) {
-          setError('All fields are required');
+        if (!zoneInfo.zoneName ) {
+          setError('Zone name are required');
           return;
+        }
+        if (!zoneInfo.routes) {
+            setError('Routes are required');
+            return;
         }
         
         console.log(zoneInfo)

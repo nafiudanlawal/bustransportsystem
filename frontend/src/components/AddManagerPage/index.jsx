@@ -43,24 +43,34 @@ const AddManagerPage = (props) => {
       address,
       profilePicture: null
     }
-    
-    if (!userInfo.firstName || !userInfo.lastName || !userInfo.address || !userInfo.telephone ) {
-      setError('All fields are required');
+    if (!userInfo.firstName) {
+      setError('First name is required');
+      return;
+    }
+    if (!userInfo.lastName) {
+      setError('Last name is required');
+      return;
+    }
+
+    if (!userInfo.telephone) {
+      setError('Telephone is required');
+      return;
+    }
+    if (!userInfo.address) {
+      setError('Address is required');
       return;
     }
 
     if (!isValidUsername(userInfo.firstName)) {
-      setError('Firstname can only contain letters and numbers');
+      setError('First name can only contain letters and numbers');
       return;
     }
 
     if (!isValidUsername(userInfo.lastName)) {
-      setError('Lastname can only contain letters and numbers');
+      setError('Last name can only contain letters and numbers');
       return;
     }
     
-    console.log(userInfo)
-
     axios.post('/api/WeGo/Manager', userInfo)
 
       .then(res => {
