@@ -5,18 +5,27 @@ import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveUser from '../../redux/actions/saveUser';
-import { isValidEmail, isValidUsername, trimmed } from '../../helpers';
+import { ToastContainer, toast } from 'react-toastify';
 import Button from '../Button';
 import InputTextField from '../InputText';
 import Navbar from '../Navbar';
 import './index.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const RequestRidePage = (props) => {
+  let storage = localStorage.getItem("requestRide");
+  if(storage){
+    storage = JSON.parse(storage);
+  }else{
+    storage = {};
+  }
+
+
   const [details, setDetails] = useState({
-    departureLocation: '',
-    destinationLocation: '',
-    numberOfSits: '',
-    disabledPeople: '',
+    departureLocation: storage.departureLocation ?? '',
+    destinationLocation:storage.destinationLocation ?? '',
+    numberOfSits:storage.numberOfSits ?? '',
+    disabledPeople:storage.disabledPeople ?? '',
   });
 
   const [error, setError] = useState('');
@@ -29,23 +38,25 @@ const RequestRidePage = (props) => {
     if (error) {
       setError('');
     }
-
+    console.log({details});
+    localStorage.setItem('requestRide', JSON.stringify(details));
     setDetails({
       ...details,
       [name]: value
     });
   };
 
-  const handleRequestRide = () => {
+  const handleRequestRide = (e) => {
+    e.preventDefault();
     const {
       departureLocation,
       destinationLocation,
       numberOfSits,
-      disabledPeople} = details;
+      disabledPeople } = details;
 
     //* Trim user details
 
-    if (!pickupTime || !departureLocation || !destinationLocation || !numberOfSits || 
+    if (!pickupTime || !departureLocation || !destinationLocation || !numberOfSits ||
       !disabledPeople) {
       setError('All fields are required');
       return;
@@ -58,14 +69,17 @@ const RequestRidePage = (props) => {
     axios.post('/api/rides/request', rideDetails)
       .then(res => {
         console.log(res.data);
-        
+
         // props.saveUser(res.data);
-        alert('Your ride has been requested')
-        window.location.href = "/passenger/my-rides";
+        toast.success('Your ride has been requested');
+        localStorage.setItem('requestRide', {});
+        setTimeout(() => {
+          window.location.href = "/passenger/my-rides";
+        }, 3000);
       })
       .catch((err) => {
         setError('Process failed.');
-        
+
         console.log(err);
       });
   };
@@ -85,7 +99,7 @@ const RequestRidePage = (props) => {
   return (
     <div className="RequestRidePage Page">
       <Navbar />
-      <div className="Form">
+      <form className="Form" action='#' method='POST' onSubmit={handleRequestRide}>
         <div className="FormTitle">Request ride</div>
 
         <DateTimePicker
@@ -145,7 +159,18 @@ const RequestRidePage = (props) => {
           className="CancelBtn"
           onClick={handleCancel}
         />
-      </div>
+      </form>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }

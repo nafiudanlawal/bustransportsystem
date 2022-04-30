@@ -15,6 +15,7 @@ const LoginPage = (props) => {
     password: ''
   });
   const [error, setError] = useState('');
+  const [message, setMessage] = useState('');
 
   const handleChange = ({ target }) => {
     const { name, value } = target;
@@ -48,23 +49,22 @@ const LoginPage = (props) => {
       return;
     }
 
-    console.log(userInfo)
     axios.post('/api/users/login', userInfo)
       .then(res => {
         // save user data to store
         props.saveUser(res.data);
-        // add access token to localstorage
+        // add access token to localStorage
         // localStorage.setItem('token', res.data.id);
         localStorage.setItem('id', res.data.user);
-        // console.log(res);
         if (res.data.role === 'passenger') {
           window.location.href = "/passenger";
         } else {
           window.location.href = "/admin";
-        }                
+        }
       })
       .catch((err) => {
         setError('Incorrect email or password.');
+        setMessage("");
         console.log(err);
       });
   };
@@ -72,7 +72,7 @@ const LoginPage = (props) => {
   useEffect(() => {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
-    // the previous state which wasnt cleared
+    // the previous state which wasn't cleared
     localStorage.removeItem('state');
   }, []);
 
@@ -80,7 +80,6 @@ const LoginPage = (props) => {
     <div className="LoginPage Page">
       <div className="Form">
         <div className="FormTitle">welcome back</div>
-
         <InputTextField
           required
           type="text"
@@ -100,6 +99,11 @@ const LoginPage = (props) => {
 
         {error && (
           <div className="Error">
+            {error}
+          </div>
+        )}
+        {message && (
+          <div className="InfoText">
             {error}
           </div>
         )}
