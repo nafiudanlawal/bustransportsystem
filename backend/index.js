@@ -125,8 +125,8 @@ app.get('/api/rides', async(req, res) => {
 app.get('/api/rides/:userID', async(req, res) => {
     try {
         const rides = await Ride.find({ passenger: req.params.userID });
+        console.log(rides);
         res.json(rides);
-
     } catch (err) {
         res.json({ message: err });
     }
