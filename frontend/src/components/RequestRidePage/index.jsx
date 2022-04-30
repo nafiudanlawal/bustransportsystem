@@ -9,6 +9,7 @@ import { isValidEmail, isValidUsername, trimmed } from '../../helpers';
 import Button from '../Button';
 import InputTextField from '../InputText';
 import Navbar from '../Navbar';
+import './index.css';
 
 const RequestRidePage = (props) => {
   const [details, setDetails] = useState({
