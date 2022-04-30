@@ -51,7 +51,7 @@ const RequestRidePage = (props) => {
       return;
     }
 
-    const rideDetails = { ...details, pickupTime, passenger: localStorage.getItem('id') };
+    const rideDetails = { ...details, pickupTime, passenger: localStorage.getItem('id'), cancelled: 'no'};
 
     console.log(rideDetails)
 

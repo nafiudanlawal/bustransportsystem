@@ -12,7 +12,7 @@ table {
 
 th, tr {
   cursor: default;
-  padding: 16px;
+  padding: 14px;
   border-bottom: 1px solid #DDD;
 }
 th:first-child{
