@@ -35,7 +35,7 @@ app.post('/api/users/register', async(req, res) => {
 
     // CHECK IF USER EXISTS
     const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist) return res.status(201).send({code: 400, message: "Email already exists, Go to login page.", details:err});
+    if (emailExist) return res.status(200).send({ code: 400, message: "Email already exists, Go to login page.", details: "Email already exists, Go to login page."});
 
 
     // CREATE USER
@@ -48,11 +48,10 @@ app.post('/api/users/register', async(req, res) => {
         password: req.body.password
     });
     try {
-        const savedUser = await user.save();
+        await user.save();
         res.status(200).send({ user: user._id, firstname: user.firstname, role: user.role, code: 200, message: 'Successfully created user' });
 
     } catch (err) {
-        //res.status(400).send(err);
         res.status(201).send({code: 400, message: "User not created", details:err});
     }
 });
@@ -78,7 +77,7 @@ app.post('/api/users/login', async(req, res) => {
 
     } catch (error) {
         //res.status(500).send({ error: error.message });
-        res.status(500).send({code: 500, message: "Token not assigned", details:err});
+        res.status(500).send({code: 500, message: "Token not assigned", details:error});
     }
 });
 

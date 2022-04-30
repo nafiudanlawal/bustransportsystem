@@ -106,7 +106,6 @@ const RequestRidePage = (props) => {
     setError('Request cancelled');
     setTimeout(() => {
       setError('');
-      localStorage.setItem('requestRide', JSON.stringify({}));
     }, 1000);
   }
 

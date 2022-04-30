@@ -8,9 +8,10 @@ import { isValidEmail, isValidUsername, trimmed } from '../../helpers';
 import Button from '../Button';
 import InputTextField from '../InputText';
 import './RegisterPage.css';
+import { toast, ToastContainer } from 'react-toastify';
 
 const RegisterPage = (props) => {
-  const [user, setUser ] = useState({
+  const [user, setUser] = useState({
     firstname: '',
     lastname: '',
     role: '',
@@ -45,14 +46,33 @@ const RegisterPage = (props) => {
       phone,
       password: trimmed(password)
     }
-    
-    if (!userInfo.firstname || !userInfo.lastname || !userInfo.role || !userInfo.email || !userInfo.password || !userInfo.phone ) {
-      setError('All fields are required');
+
+    if (!userInfo.firstname) {
+      setError('First name is required');
       return;
     }
-
+    if (!userInfo.lastname) {
+      setError('Last name is required');
+      return;
+    }
+    if (!userInfo.role) {
+      setError('Role is required');
+      return;
+    }
+    if (!userInfo.email) {
+      setError('Email is required');
+      return;
+    }
+    if (!userInfo.phone) {
+      setError('Phone number is required');
+      return;
+    }
+    if (!userInfo.password) {
+      setError('Password is required');
+      return;
+    }
     if (!isValidUsername(userInfo.name)) {
-      setError('Username can only contain letters and numbers');
+      setError('Name can only contain letters and numbers');
       return;
     }
 
@@ -60,19 +80,28 @@ const RegisterPage = (props) => {
       setError('Invalid email address');
       return;
     }
-    
-    console.log(userInfo)
+
     axios.post('/api/users/register/', user)
       .then(res => {
-        console.log(res.data);
-        
-        props.saveUser(res.data);
-        //! Once they've registered, redirect them to the tutorial page
-        window.location.href = "/passenger";
+        if (res.data.code === 200) {
+          props.saveUser(res.data);
+          //! Once they've registered, redirect them to the tutorial page
+
+          toast.success('Registration successful');
+          setTimeout(() => {
+            window.location.href = "/passenger";
+          }, 3000);
+        } else if (res.data.code === 400) {
+          console.log(res)
+          setError(res.data.message);
+        } else {
+          setError('Registration failed.');
+        }
+
       })
       .catch((err) => {
         setError('Registration failed.');
-        
+
         console.log(err);
       });
   };
@@ -80,7 +109,7 @@ const RegisterPage = (props) => {
   useEffect(() => {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
-    // the previous state which wasnt cleared
+    // the previous state which wasn't cleared
     localStorage.removeItem('state');
   }, []);
 
@@ -116,16 +145,16 @@ const RegisterPage = (props) => {
           onChange={handleChange}
         />
 
-        <InputTextField 
+        <InputTextField
           required
-          type="text"
+          type="email"
           name="email"
           value={user.email}
           placeholder="Email"
           onChange={handleChange}
         />
 
-        <InputTextField 
+        <InputTextField
           required
           type="number"
           name="phone"
@@ -134,7 +163,7 @@ const RegisterPage = (props) => {
           onChange={handleChange}
         />
 
-        <InputTextField 
+        <InputTextField
           required
           type="password"
           name="password"
@@ -158,6 +187,17 @@ const RegisterPage = (props) => {
           Have an account? <Link to='/login'>Login here</Link>
         </div>
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }
