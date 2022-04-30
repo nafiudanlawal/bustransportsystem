@@ -34,7 +34,7 @@ app.post('/api/users/register', async(req, res) => {
 
     // CHECK IF USER EXISTS
     const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist) return res.status(400).send('Email already exists');
+    if (emailExist) return res.status(400).send({code: 400, message: "Email already exists, Go to login page.", details:err});
 
 
     // CREATE USER
@@ -51,7 +51,8 @@ app.post('/api/users/register', async(req, res) => {
         res.status(200).send({ user: user._id, firstname: user.firstname, role: user.role, code: 200, message: 'Successfully created user' });
 
     } catch (err) {
-        res.status(400).send(err);
+        //res.status(400).send(err);
+        res.status(400).send({code: 400, message: "User not created", details:err});
     }
 });
 
@@ -62,11 +63,11 @@ app.post('/api/users/login', async(req, res) => {
 
     // CHECK IF EMAIL EXISTS
     const user = await User.findOne({ email: req.body.email });
-    if (!user) return res.status(400).send({ code: 400, details: 'Email or Password is invalid' });
+    if (!user) return res.status(400).send({ code: 400, message: 'Email or Password is invalid' });
 
     // CHECK IF PASSWORD IS CORRECT
     const validPass = req.body.password === user.password;
-    if (!validPass) return res.status(400).send({ code: 400, details: 'Email or Password is invalid' });
+    if (!validPass) return res.status(400).send({ code: 400, message: 'Email or Password is invalid' });
 
 
     // CREATE AND ASSIGN A TOKEN
@@ -75,7 +76,8 @@ app.post('/api/users/login', async(req, res) => {
         res.header('auth-token', token).status(200).send({ user: user._id, firstname: user.firstname, role: user.role, token: token, message: 'successfully Logged in', code: 200 });
 
     } catch (error) {
-        res.status(500).send({ error: error.message });
+        //res.status(500).send({ error: error.message });
+        res.status(500).send({code: 500, message: "Token not assigned", details:err});
     }
 });
 
@@ -85,7 +87,8 @@ app.get('/api/users/:userID', async(req, res) => {
         const user = await User.findById(req.params.userID);
         res.status(200).send(user);
     } catch (err) {
-        res.json({ message: err });
+        //res.json({ message: err });
+        res.status(400).send({code: 400, message: "UserID doesn't exists", details:err});
     }
 });
 
@@ -106,7 +109,8 @@ app.post('/api/rides/request', async(req, res) => {
         res.status(200).send({ code: 200, message: 'Successfully requested ride.' });
 
     } catch (err) {
-        res.status(400).send(err);
+        //res.status(400).send(err);
+        res.status(400).send({code: 400, message: "Ride not requested", details:err});
     }
 });
 
@@ -117,7 +121,8 @@ app.get('/api/rides', async(req, res) => {
         res.json(rides);
 
     } catch (err) {
-        res.json({ message: err });
+        //res.json({ message: err });
+        res.status(400).send({code: 400, message: "No rides", details:err});
     }
 });
 
@@ -128,7 +133,8 @@ app.get('/api/rides/:userID', async(req, res) => {
         res.json(rides);
 
     } catch (err) {
-        res.json({ message: err });
+        //res.json({ message: err });
+        res.status(400).send({code: 400, message: "UserID doesn't exist", details:err});
     }
 });
 
@@ -146,7 +152,8 @@ app.post('/api/buses', async(req, res) => {
         res.status(200).send({ code: 200, message: 'Successfully created bus.' });
 
     } catch (err) {
-        res.status(400).send(err);
+        //res.status(400).send(err);
+        res.status(400).send({code: 400, message: "Bus not created", details:err});
     }
 })
 
@@ -157,7 +164,8 @@ app.get('/api/buses', async(req, res) => {
         res.json(buses);
 
     } catch (err) {
-        res.json({ message: err });
+        //res.json({ message: err });
+        res.status(400).send({code: 400, message: "No buses", details: err});
     }
 });
 
@@ -168,7 +176,8 @@ app.get('/api/buses/:userID', async(req, res) => {
         res.json(buses);
 
     } catch (err) {
-        res.json({ message: err });
+        //res.json({ message: err });
+        res.status(400).send({code: 400, message: "BusID doesn't exists", details: err});
     }
 });
 
