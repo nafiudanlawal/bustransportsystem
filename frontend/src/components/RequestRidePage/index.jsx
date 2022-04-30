@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
@@ -14,18 +14,18 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const RequestRidePage = (props) => {
   let storage = localStorage.getItem("requestRide");
-  if(storage){
+  if (storage) {
     storage = JSON.parse(storage);
-  }else{
+  } else {
     storage = {};
   }
 
 
   const [details, setDetails] = useState({
     departureLocation: storage.departureLocation ?? '',
-    destinationLocation:storage.destinationLocation ?? '',
-    numberOfSits:storage.numberOfSits ?? '',
-    disabledPeople:storage.disabledPeople ?? '',
+    destinationLocation: storage.destinationLocation ?? '',
+    numberOfSits: storage.numberOfSits ?? '',
+    disabledPeople: storage.disabledPeople ?? '',
   });
 
   const [error, setError] = useState('');
@@ -38,12 +38,15 @@ const RequestRidePage = (props) => {
     if (error) {
       setError('');
     }
-    console.log({details});
     setDetails({
       ...details,
       [name]: value
     });
-    localStorage.setItem('requestRide', JSON.stringify({...details, [name]: value}));
+    localStorage.setItem('requestRide',
+      JSON.stringify({
+        ...details,
+        [name]: value,
+      }));
   };
 
   const handleRequestRide = (e) => {
@@ -56,24 +59,24 @@ const RequestRidePage = (props) => {
 
     //* Trim user details
 
-    if (!pickupTime){
+    if (!pickupTime) {
       setError('Pickup time is required');
       return;
     }
     if (!departureLocation) {
-      setError(error + 'Departure Location is required');
+      setError('Departure Location is required');
       return;
     }
     if (!destinationLocation) {
-      setError(error + 'Destination Location is required');
+      setError('Destination Location is required');
       return;
     }
     if (!numberOfSits) {
-      setError(error + 'Number of sits is required');
+      setError('Number of sits is required');
       return;
     }
     if (!disabledPeople) {
-      setError(error + 'Number of disabled people is required');
+      setError('Number of disabled people is required');
       return;
     }
 
@@ -87,7 +90,7 @@ const RequestRidePage = (props) => {
 
         // props.saveUser(res.data);
         toast.success('Your ride has been requested');
-        localStorage.setItem('requestRide', {});
+        localStorage.setItem('requestRide', JSON.stringify({}));
         setTimeout(() => {
           window.location.href = "/passenger/my-rides";
         }, 3000);
@@ -101,7 +104,10 @@ const RequestRidePage = (props) => {
 
   const handleCancel = () => {
     setError('Request cancelled');
-    setTimeout(() => setError(''), 2000);
+    setTimeout(() => {
+      setError('');
+      localStorage.setItem('requestRide', JSON.stringify({}));
+    }, 1000);
   }
 
   useEffect(() => {
