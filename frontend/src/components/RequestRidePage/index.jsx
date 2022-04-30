@@ -39,11 +39,11 @@ const RequestRidePage = (props) => {
       setError('');
     }
     console.log({details});
-    localStorage.setItem('requestRide', JSON.stringify(details));
     setDetails({
       ...details,
       [name]: value
     });
+    localStorage.setItem('requestRide', JSON.stringify({...details, [name]: value}));
   };
 
   const handleRequestRide = (e) => {
@@ -56,9 +56,24 @@ const RequestRidePage = (props) => {
 
     //* Trim user details
 
-    if (!pickupTime || !departureLocation || !destinationLocation || !numberOfSits ||
-      !disabledPeople) {
-      setError('All fields are required');
+    if (!pickupTime){
+      setError('Pickup time is required');
+      return;
+    }
+    if (!departureLocation) {
+      setError(error + 'Departure Location is required');
+      return;
+    }
+    if (!destinationLocation) {
+      setError(error + 'Destination Location is required');
+      return;
+    }
+    if (!numberOfSits) {
+      setError(error + 'Number of sits is required');
+      return;
+    }
+    if (!disabledPeople) {
+      setError(error + 'Number of disabled people is required');
       return;
     }
 
