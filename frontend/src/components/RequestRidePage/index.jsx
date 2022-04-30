@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DateTimePicker from 'react-datetime-picker';
-import { Link, withRouter } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
