@@ -5,3 +5,26 @@
   gap: 1rem;
   border-bottom: 1px solid black;
 }
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th, tr {
+  cursor: default;
+  padding: 16px;
+  border-bottom: 1px solid #DDD;
+}
+th:first-child{
+  width:70%
+}
+tr:nth-child(even) {
+  background-color: rgba(150, 212, 212, 0.1);
+}
+
+th:nth-child(even),td:nth-child(even) {
+  background-color: rgba(150, 212, 212, 0.1);
+}
+tr:hover {
+  background-color: #D6EEEE;
+}
