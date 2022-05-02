@@ -116,7 +116,7 @@ const RegisterPage = (props) => {
   return (
     <div className="RegisterPage Page">
       <div className="Form">
-        <div className="FormTitle">sign up</div>
+        <div><strong>Sign Up</strong></div>
 
         <InputTextField
           required

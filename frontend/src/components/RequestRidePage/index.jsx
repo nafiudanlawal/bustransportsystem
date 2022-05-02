@@ -82,14 +82,14 @@ const RequestRidePage = (props) => {
 
     const rideDetails = { ...details, pickupTime, passenger: localStorage.getItem('id'), cancelled: 'no'};
 
-    console.log(rideDetails)
+    //console.log(rideDetails)
 
     axios.post('/api/rides/request', rideDetails)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
 
         // props.saveUser(res.data);
-        toast.success('Your ride has been requested');
+        toast.success('Your ride has been successfully requested');
         localStorage.setItem('requestRide', JSON.stringify({}));
         setTimeout(() => {
           window.location.href = "/passenger/my-rides";
@@ -106,6 +106,7 @@ const RequestRidePage = (props) => {
     setError('Request cancelled');
     setTimeout(() => {
       setError('');
+      window.location.href = "/passenger";
     }, 1000);
   }
 
