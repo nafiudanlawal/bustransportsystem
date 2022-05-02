@@ -12,6 +12,21 @@ const config = require('./config/config');
 app.use(express.json());
 app.use(cors());
 
+//// Logging to debug.log /////
+var fs = require('fs');
+var util = require('util');
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+  log_file.write(util.format(d) + '\n');
+  log_stdout.write(util.format(d) + '\n');
+};
+
+//////////
+
+
+
 // CONNECT TO DB
 mongoose.connect(config.mongoURI, {
     useNewUrlParser: true,
@@ -35,7 +50,10 @@ app.post('/api/users/register', async(req, res) => {
 
     // CHECK IF USER EXISTS
     const emailExist = await User.findOne({ email: req.body.email });
-    if (emailExist) return res.status(200).send({ code: 400, message: "Email already exists, Go to login page.", details: "Email already exists, Go to login page."});
+    if (emailExist) {
+        return res.status(200).send({ code: 400, message: "Email already exists, Go to login page.", details: "Email already exists, Go to login page."});
+    }
+
 
 
     // CREATE USER
@@ -52,6 +70,7 @@ app.post('/api/users/register', async(req, res) => {
         res.status(200).send({ user: user._id, firstname: user.firstname, role: user.role, code: 200, message: 'Successfully created user' });
 
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         res.status(201).send({code: 400, message: "User not created", details:err});
     }
 });
@@ -76,6 +95,7 @@ app.post('/api/users/login', async(req, res) => {
         res.header('auth-token', token).status(200).send({ user: user._id, firstname: user.firstname, role: user.role, token: token, message: 'successfully Logged in', code: 200 });
 
     } catch (error) {
+        console.log("NEW ERROR: ", error);
         //res.status(500).send({ error: error.message });
         res.status(500).send({code: 500, message: "Token not assigned", details:error});
     }
@@ -85,9 +105,11 @@ app.post('/api/users/login', async(req, res) => {
 app.get('/api/users/:userID', async(req, res) => {
     try {
         const user = await User.findById(req.params.userID);
+        console.log('See');
         res.status(200).send(user);
     } catch (err) {
         //res.json({ message: err });
+        console.log("NEW ERROR: ", err);
         res.status(201).send({code: 400, message: "UserID doesn't exists", details:err});
     }
 });
@@ -111,6 +133,7 @@ app.post('/api/rides/request', async(req, res) => {
 
     } catch (err) {
         //res.status(400).send(err);
+        console.log("NEW ERROR: ", err);
         res.status(201).send({code: 400, message: "Ride not requested", details:err});
     }
 });
@@ -122,6 +145,7 @@ app.get('/api/rides', async(req, res) => {
         res.json(rides);
 
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         res.status(201).send({code: 400, message: "No rides", details:err});
     }
@@ -134,6 +158,7 @@ app.get('/api/rides/:userID', async(req, res) => {
         // console.log(rides);
         res.json(rides);
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         res.status(201).send({code: 400, message: "UserID doesn't exist", details:err});
     }
@@ -148,6 +173,7 @@ app.post('/api/rides/cancelRide', async(req, res) => {
         // console.log(rides);
         res.json(rides);
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         res.status(201).send({code: 400, message: "Error while cancelling the ride, please contact the admin", details:err});
     }
@@ -166,6 +192,7 @@ app.post('/api/buses', async(req, res) => {
         res.status(200).send({ code: 200, message: 'Successfully created bus.' });
 
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         //res.status(400).send(err);
         res.status(201).send({code: 400, message: "Bus not created", details:err});
     }
@@ -178,6 +205,7 @@ app.get('/api/buses', async(req, res) => {
         res.json(buses);
 
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         res.status(201).send({code: 400, message: "No buses", details: err});
     }
@@ -189,6 +217,7 @@ app.get('/api/buses/:userID', async(req, res) => {
         const buses = await Bus.find({ driver: req.params.userID });
         res.json(buses);
     } catch (err) {
+        console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         res.status(201).send({code: 400, message: "BusID doesn't exists", details: err});
     }
