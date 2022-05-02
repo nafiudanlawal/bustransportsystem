@@ -112,6 +112,20 @@ app.get("/auth/logout", (req, res) => {
     res.redirect(CLIENT_URL);
 });
 
+// PING --> PONG
+app.get('/api/ping', async(req, res) => {
+    try {
+        res.status(200).send({message: "pong"});
+        //res.status(200).send("pong");
+
+    } catch (err) {
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: "not pong", details: err});
+    }
+});
+
+
+
 //! ----- ROUTES FOR BUS STOPS ------
 app.post('/api/routes', async(req, res) => {
     const routes = new BusRoute({
