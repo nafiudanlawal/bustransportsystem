@@ -3,9 +3,7 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
 } from 'react-router-dom';
-import store from './redux/store';
 import LoginPage from './components/LoginPage';
 import RegisterPage from './components/RegisterPage';
 import LandingPage from './components/LandingPage';
