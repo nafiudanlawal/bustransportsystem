@@ -5,8 +5,12 @@ import { connect } from 'react-redux';
 import saveUser from '../../redux/actions/saveUser';
 import { ReactComponent as TaxiImg } from '../../assets/images/taxi.svg';
 import './LandingPage.css';
+import Button from '../Button';
 
 const LandingPage = (props) => {
+  const handleLoginWithGoogle = () => {
+    window.open("http://localhost:5000/auth/google", "_self");
+  }
   return (
     <div className="LandingPage Page">
       <div className="LoginLogo">
@@ -18,11 +22,16 @@ const LandingPage = (props) => {
       <div className="ButtonSection">
         <div className="TitleWrapper">
         <div className="AppName">on demand transport</div>
-        Get there without a hussle
+        Get there without a hassle
         </div>
         <Link to='/login' className="LandingLoginBtn">
           Login
         </Link>
+
+        <Button
+          label="Login With Google"
+          onClick={handleLoginWithGoogle}
+        />
 
         <div className="AlternativeLink">
           <Link to='/register'>Or create an account</Link>
