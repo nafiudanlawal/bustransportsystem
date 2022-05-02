@@ -4,6 +4,9 @@ import { connect } from 'react-redux';
 import Navbar from '../Navbar';
 
 const PassengerLinksPage = (props) => {
+  const logout = () => {
+    window.open("http://localhost:5000/auth/logout", "_self");
+  };
   return (
     <div className="PassengerLinksPage Page">
       <Navbar />
@@ -16,6 +19,10 @@ const PassengerLinksPage = (props) => {
 
         <Link to='/passenger/my-rides' className="LandingLoginBtn">
           View my rides
+        </Link>
+
+        <Link onClick={logout} className="LandingLoginBtn">
+          Logout
         </Link>
 
       </div>
