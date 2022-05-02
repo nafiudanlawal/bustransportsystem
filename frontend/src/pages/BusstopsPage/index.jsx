@@ -47,18 +47,17 @@ const BusstopsPage = (props) => {
         
         console.log(BusStopsInfo);
         // Needs to be changed
-        axios.post('/api/WeGo/users', BusStopsInfo)             
-          .then(res => {
-            // save user data to store
-            props.saveUser(res.data);
-            // add access token to localstorage
-            localStorage.setItem('token', res.data.id);
-            
-            window.location.href = "/";
+        axios.post('http://localhost:5000/api/Busstops', BusStopsInfo)             //!   Needs to be changed
+        .then(res => {
+          if(res.code === 200){
+            window.location.href = "/admin";
+          }else{
+            setError(res.message);
+          }
           })
-          .catch((err) => {
-            setError('Incorrect email or password.');
-            console.log(err);
+        .catch((err) => {
+          setError('Error in adding Route');
+          console.log(err);
         });
     };
     

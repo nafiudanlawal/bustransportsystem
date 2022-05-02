@@ -11,3 +11,4 @@ Endpoint: /register
 2022-05-02 23:29:45 NEW ERROR: CastError: Cast to ObjectId failed for value ":userID" (type string) at path "_id" for model "User"
 Endpoint: /:userID
 2022-05-02 23:31:11 Connected to MongoDB
+2022-05-03 0:2:46 Connected to MongoDB

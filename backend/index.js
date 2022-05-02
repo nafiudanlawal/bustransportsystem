@@ -2,6 +2,10 @@ const express = require('express');
 const app = express();
 const cookieSession = require("cookie-session");
 const { User } = require('./models/UserModel');
+const { Ride } = require('./models/RideModel');
+const { Bus } = require('./models/BusModel');
+const { BusRoute } = require('./models/RouteModel');
+const { Zone } = require('./models/ZoneModel')
 const passport = require("passport");
 const mongoose = require('mongoose');
 const logData = require('./config/logInfo');
@@ -116,10 +120,110 @@ app.get("/auth/logout", (req, res) => {
     res.redirect(CLIENT_URL);
 });
 
+// PING --> PONG
+app.get('/api/ping', async(req, res) => {
+    try {
+        res.status(200).send({message: "pong"});
+        //res.status(200).send("pong");
+
+    } catch (err) {
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: "not pong", details: err});
+    }
+});
+
 //! ----- ROUTES FOR BUS STOPS ------
+app.post('/api/routes', async(req, res) => {
+    const routes = new BusRoute({
+        name: req.body.name,
+    });
+    try {
+        await routes.save();
+        res.status(200).send({ code: 200, message: 'Successfully created route' });
+ 
+    } catch (err) {
+        //console.log("NEW ERROR: ", err);
+        //res.status(400).send(err);
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: "Route not created", details:err});
+    }
+})
+app.get('/api/routes', async(req, res) => {
+    try {
+        const routes = await BusRoute.find().exec();
+        res.json(routes);
+
+    } catch (err) {
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: "No routes", details: err});
+    }
+});
 
 //! ----- ROUTES FOR ZONES ------
+app.post('/api/zones', async(req, res) => {
+    const zone = new Zone({
+        name:req.body.name,
+        route: ObjectId(req.body.route),
+    });
+    try {
+        await zone.save();
+        res.status(200).send({ code: 200, message: 'Successfully created a zone.' });
 
+    } catch (err) {
+        //console.log("NEW ERROR: ", err);
+        //res.status(400).send(err);
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: " Zone not created ", details:err});
+    }
+}
+)
+app.get('/api/zones', async(req, res) => {
+    try {
+        const zones = await Zone.find().exec();
+        res.json(zones);
+
+    } catch (err) {
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: "No zones", details: err});
+    }
+});
+
+//! ----- ROUTES FOR BUSSTOP ------
+app.post('/api/busstops', async(req, res) => {
+    const busStop = new BusStop({
+        name:req.body.name,
+        zone: ObjectId(req.body.route),
+    });
+    try {
+        await zone.save();
+        res.status(200).send({ code: 200, message: 'Successfully created a bus stop.' });
+
+    } catch (err) {
+        //console.log("NEW ERROR: ", err);
+        //res.status(400).send(err);
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: " Bus stop not created ", details:err});
+    }
+}
+)
+//ROUTES FOR BUS ------
+
+app.post('/api/bus', async(req, res) => {
+    const bus = new Bus({
+        name:req.body.name,
+        zone: ObjectId(req.body.route),
+    });
+    try {
+        await zone.save();
+        res.status(200).send({ code: 200, message: 'Successfully created a bus stop.' });
+
+    } catch (err) {
+        //console.log("NEW ERROR: ", err);
+        //res.status(400).send(err);
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: " Bus stop not created ", details:err});
+    }
+}
+)
 app.listen(process.env.PORT || 5000);
-
 module.exports = {app};

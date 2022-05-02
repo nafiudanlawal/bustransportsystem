@@ -8,21 +8,16 @@ import { trimmed } from '../../helpers';
 import InputTextField from '../../components/InputText';
 
 const RoutesPage = (props) => {
-  const [route, setRoute] = useState({
-    route: '',
-  });
+  const [route, setRoute] = useState("");
   const [error, setError] = useState('');
   const handleChange = ({ target }) => {
     const { name, value } = target;
+    setRoute(value);
 
     if (error) {
       setError('');
     }
 
-    setRoute({
-      ...route,
-      [name]: value
-    });
   };
   useEffect(() => {
     // remove the current state from local storage
@@ -31,28 +26,26 @@ const RoutesPage = (props) => {
   }, []);
 
   const submit = () => {
-    const { routeName } = route;
 
     const routeInfo = {
-      routeName: trimmed(routeName)
+      name: trimmed(route)
     }
 
-    if (!routeInfo.route.routeName) {
+    if (!route) {
       setError('Route is required');
       return;
     }
 
-    axios.post('/api/WeGo/users', routeInfo)             //!   Needs to be changed
+    axios.post('http://localhost:5000/api/routes', routeInfo)             //!   Needs to be changed
       .then(res => {
-        // save user data to store
-        props.saveUser(res.data);
-        // add access token to localstorage
-        localStorage.setItem('token', res.data.id);
-
-        window.location.href = "/";
-      })
+        if(res.code === 200){
+          window.location.href = "/admin";
+        }else{
+          setError(res.message);
+        }
+        })
       .catch((err) => {
-        setError('Incorrect email or password.');
+        setError('Error in adding Route');
         console.log(err);
       });
   };
@@ -66,7 +59,7 @@ const RoutesPage = (props) => {
           required
           type="text"
           name="route"
-          value={route.routeName}
+          value={route}
           placeholder="Route"
           onChange={handleChange}
         />
