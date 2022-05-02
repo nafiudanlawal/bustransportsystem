@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, withRouter } from 'react-router-dom';
+import {  withRouter } from 'react-router-dom';
 import axios from 'axios';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import saveUser from '../../redux/actions/saveUser';
-import { isValidEmail, isValidUsername, trimmed } from '../../helpers';
+import {  isValidUsername } from '../../helpers';
 import Button from '../Button';
 import InputTextField from '../InputText';
 import Navbar from '../Navbar';
@@ -92,7 +92,7 @@ const AddDriverPage = (props) => {
   useEffect(() => {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
-    // the previous state which wasnt cleared
+    // the previous state which wasn't cleared
     localStorage.removeItem('state');
   }, []);
 

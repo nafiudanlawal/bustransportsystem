@@ -27,7 +27,6 @@ const RoutesPage = (props) => {
   useEffect(() => {
     // remove the current state from local storage
     // so that when a person logs in they dont encounter
-    // the previous state which wasnt cleared
     localStorage.removeItem('state');
   }, []);
 
