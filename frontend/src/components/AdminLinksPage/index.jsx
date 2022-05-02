@@ -20,7 +20,7 @@ const AdminLinksPage = (props) => {
     }
     setInterval(() => {
       pingServer();
-    }, 10000);
+    }, 30000);
 
   }, []);
 
