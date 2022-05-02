@@ -9,9 +9,11 @@ import './ZonesPage.css'
 
 const ZonesPage = (props) => {
     const [zone, setZone] = useState({
-        routes: '',
+        route: "",
         zoneName: '',
     });
+
+    const [routes, setRoutes] = useState([]);
     const [error, setError] = useState('');
     const handleChange = ({ target }) => {
         const { name, value } = target;
@@ -29,39 +31,45 @@ const ZonesPage = (props) => {
         // remove the current state from local storage
         // so that when a person logs in they dont encounter
         // the previous state which wasnt cleared
-        localStorage.removeItem('state');
+        axios.get(`/api/routes`)
+        .then((res) =>{
+            setRoutes( res.data );
+        })
+        .catch(err => {
+            console.log(err)
+        })
     }, []);
 
     const submit = () => {
-        const { routes, zoneName } = zone;
-    
-        //* Trim user details
-        const zoneInfo = {
-          zoneName: trimmed(zoneName),
-          routes: trimmed(routes)
-        }
-    
-        if (!zoneInfo.zoneName ) {
-          setError('Zone name are required');
-          return;
-        }
-        if (!zoneInfo.routes) {
-            setError('Routes are required');
+        const { route, zoneName } = zone;
+        console.log(zone);
+        if (!route){ 
+            setError('Route is required');
             return;
         }
+        if (!zoneName){ 
+            setError('Zone name is required');
+            return;
+        }
+        //* Trim user details
+        const zoneInfo = {
+          name: zoneName.trim(),
+          route: route.trim()
+        }
         
-        console.log(zoneInfo)
-        axios.post('/api/WeGo/users', zoneInfo)             //!   Needs to be changed
-          .then(res => {
+        axios.post('http://localhost:5000/api/zones', zoneInfo)             //!   Needs to be changed
+        .then(res => {
             // save user data to store
-            props.saveUser(res.data);
             // add access token to localstorage
-            localStorage.setItem('token', res.data.id);
-            
-            window.location.href = "/";
+            console.log("here", res)
+            if(res.data.code === 200){
+                window.location.href = "/admin";
+            }else{
+                setError(res.data.message);
+            }
           })
           .catch((err) => {
-            setError('Incorrect email or password.');
+            setError('Failed to add zone.');
             console.log(err);
         });
     };
@@ -70,15 +78,20 @@ const ZonesPage = (props) => {
         <div className="Page">
             <div className="Form">
                 <div className="FormTitle">Add Zone</div>
-
-                <InputTextField
+                <select  
                     required
                     type="text"
-                    name="routes"
-                    value={zone.routes}
-                    placeholder="Zone"
+                    name="route"
+                    value={zone.route}
+                    placeholder="Route"
                     onChange={handleChange}
-                />
+                    className='InputTextField'
+                >
+                    <option value={""}>--Route--</option>
+                    { routes.map((item)=> (
+                        <option value={item._id} key={item._id} >{item.name}</option>
+                    ))}
+                </select>
         
                 <InputTextField
                     required
@@ -99,7 +112,6 @@ const ZonesPage = (props) => {
                     label="ADD ZONE"
                     onClick={submit}
                 />
-    
             </div>
         </div>
     )
