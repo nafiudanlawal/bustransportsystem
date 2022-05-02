@@ -241,6 +241,20 @@ app.get('/api/buses/:userID', async(req, res) => {
     }
 });
 
+// PING --> PONG
+app.get('/api/ping', async(req, res) => {
+    try {
+        res.status(200).send({message: "pong"});
+        //res.status(200).send("pong");
+
+    } catch (err) {
+        console.log("NEW ERROR: "+ err +"\n"+req.path);
+        res.status(201).send({code: 400, message: "not pong", details: err});
+    }
+});
+
+
+
 //! ----- ROUTES FOR BUS STOPS ------
 
 //! ----- ROUTES FOR ZONES ------
