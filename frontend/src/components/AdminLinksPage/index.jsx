@@ -1,9 +1,30 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import Navbar from '../Navbar';
+import axios from 'axios';
+import { toast, ToastContainer } from 'react-toastify';
 
 const AdminLinksPage = (props) => {
+  useEffect(() => {
+    const pingServer = () => {
+      axios.get("http://localhost:5000/api/ping")
+        .then(res => {
+          if(res.data.message !== "pong"){
+            toast.warning("server unavailable");
+          }
+        }).catch(error => {
+          console.log(error);
+          toast.warning("server unavailable");
+        })
+    }
+    setInterval(() => {
+      pingServer();
+    }, 10000);
+
+  }, []);
+
+
   return (
     <div className="AdminLinksPage Page">
       <Navbar />
@@ -35,6 +56,17 @@ const AdminLinksPage = (props) => {
         </Link>
 
       </div>
+      <ToastContainer
+        position="top-center"
+        autoClose={5000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }

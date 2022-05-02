@@ -17,6 +17,8 @@ import RoutesPage from './pages/RoutesPage';
 import BusesPage from './pages/BusesPage';
 import RequestRidePage from './components/RequestRidePage';
 import MyRidesPage from './components/MyRidesPage';
+import axios from 'axios';
+import { toast } from 'react-toastify';
 // Protected route should have token. If not, login.
 // const ProtectedRoute = ({ isAllowed, ...props }) => (
 //   isAllowed
