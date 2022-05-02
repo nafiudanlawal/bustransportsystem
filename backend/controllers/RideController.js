@@ -20,7 +20,7 @@ const requestRide = async (req, res) => {
         //res.status(400).send(err);
         //console.log("NEW ERROR: ", err);
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "Ride not requested", details:err});
     }
 }
@@ -36,7 +36,7 @@ const getRides = async (req, res) => {
         //console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "No rides", details:err});
     }
 }
@@ -52,7 +52,7 @@ const getSpecificRide = async (req, res) => {
         //console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "UserID doesn't exist", details:err});
     }
 }
@@ -70,7 +70,7 @@ const cancelRide = async (req, res) => {
         //console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "Error while cancelling the ride, please contact the admin", details:err});
     }
 }

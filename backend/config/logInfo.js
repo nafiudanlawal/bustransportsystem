@@ -10,19 +10,15 @@ let minutes = dateObject.getMinutes();
 let seconds = dateObject.getSeconds();
 const currentDate = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds + " ";
 
-
 //// Logging to debug.log /////
-var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
-var log_stdout = process.stdout;
 
 const logData = (data) => {
-    log_file.write(currentDate + util.format(data) + '\n');
-    log_stdout.write(currentDate + util.format(data) + '\n');
+    console.log(data);
+    fs.appendFile('debug.log', currentDate + data + "\n", (err) => {
+        if (err) throw err;
+        // console.log('Data logged successfully');
+    });
 }
-// console.log = function(d) { //
-//   log_file.write(currentDate + util.format(d) + '\n');
-//   log_stdout.write(currentDate + util.format(d) + '\n');
-// };
 //////////
 
-module.exports = { logData }
+module.exports = logData;

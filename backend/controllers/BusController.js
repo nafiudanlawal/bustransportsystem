@@ -1,5 +1,5 @@
 const { Bus } = require('../models/BusModel');
-const { log } = require('../config/logInfo');
+const logData = require('../config/logInfo');
 //! ----- ROUTES FOR BUSES ------
 // app.post('/api/buses', async(req, res) => {
 const saveBuses = async (req, res) => {
@@ -17,7 +17,7 @@ const saveBuses = async (req, res) => {
         //console.log("NEW ERROR: ", err);
         //res.status(400).send(err);
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "Bus not created", details:err});
     }
 }
@@ -33,7 +33,7 @@ const getBuses = async (req, res) => {
         //console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "No buses", details: err});
     }
 }
@@ -48,7 +48,7 @@ const getSpecificBus = async (res, req) => {
         //console.log("NEW ERROR: ", err);
         //res.json({ message: err });
         // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "BusID doesn't exists", details: err});
     }
 }

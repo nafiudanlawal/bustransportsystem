@@ -1,1 +1,13 @@
 2022-05-02 21:14:14 DB CONNECTED!
+2022-05-02 23:24:46 Connected to MongoDB
+2022-05-02 23:27:26 Connected to MongoDB
+2022-05-02 23:27:26 NEW ERROR: ValidationError: firstname: Path `firstname` is required., lastname: Path `lastname` is required., role: Path `role` is required., email: Path `email` is required., phone: Path `phone` is required., password: Path `password` is required.
+Endpoint: /register
+2022-05-02 23:27:26 NEW ERROR: CastError: Cast to ObjectId failed for value ":userID" (type string) at path "_id" for model "User"
+Endpoint: /:userID
+2022-05-02 23:29:45 Connected to MongoDB
+2022-05-02 23:29:45 NEW ERROR: ValidationError: firstname: Path `firstname` is required., lastname: Path `lastname` is required., role: Path `role` is required., email: Path `email` is required., phone: Path `phone` is required., password: Path `password` is required.
+Endpoint: /register
+2022-05-02 23:29:45 NEW ERROR: CastError: Cast to ObjectId failed for value ":userID" (type string) at path "_id" for model "User"
+Endpoint: /:userID
+2022-05-02 23:31:11 Connected to MongoDB

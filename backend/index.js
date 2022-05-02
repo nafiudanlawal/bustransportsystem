@@ -4,13 +4,14 @@ const cookieSession = require("cookie-session");
 const { User } = require('./models/UserModel');
 const passport = require("passport");
 const mongoose = require('mongoose');
+const logData = require('./config/logInfo');
 
 const routes = require('./routes');
 const cors = require('cors');
 const config = require('./config/config');
 
 const CLIENT_URL = "http://localhost:3000/";
-
+let db;
 // MIDDLEWARES 
 app.use(express.json());
 app.use(cors());
@@ -23,13 +24,20 @@ app.use(passport.session());
 
 
 // CONNECT TO DB
-mongoose.connect(config.mongoURI, {
+if (process.env.NODE_ENV === "test") {
+    db = config.testdb;
+  }else{
+    db = config.mongodb;
+  }
+
+mongoose.connect(db, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 })
-    .then(() => console.log('DB CONNECTED!'))
+    .then(() => logData("Connected to MongoDB"))
     .catch(err => {
-        console.log(`DB Connection Error: ${err.message}`)
+        logData("DB Connection error: "+ err.message);
+        // console.log(`DB Connection Error: ${err.message}`)
     })
 
 app.get('/', (req, res) => {
@@ -113,3 +121,5 @@ app.get("/auth/logout", (req, res) => {
 //! ----- ROUTES FOR ZONES ------
 
 app.listen(process.env.PORT || 5000);
+
+module.exports = {app};

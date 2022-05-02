@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken');
 const { User } = require('../models/UserModel');
-const { log } = require('../config/logInfo');
+const logData = require('../config/logInfo');
 //! ----- ROUTES FOR USERS ------
 // app.post('/api/users/register', async(req, res) => {
 const registerUser = async (req, res) => {    
@@ -28,8 +28,8 @@ const registerUser = async (req, res) => {
         res.status(200).send({ user: user._id, firstname: user.firstname, role: user.role, code: 200, message: 'Successfully created user' });
 
     } catch (err) {
-        // console.log("NEW ERROR: "+ err +"\n"+req.path);
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        // console.log("NEW ERROR: "+ err +"\n Endpoint: '/api/users/register'");
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "User not created", details:err});
     }
 }
@@ -55,7 +55,7 @@ const userLogin = async (req, res) => {
         res.header('auth-token', token).status(200).send({ user: user._id, firstname: user.firstname, role: user.role, token: token, message: 'successfully Logged in', code: 200 });
 
     } catch (error) {
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         // console.log("NEW ERROR: "+ error +"\n"+req.path);
         //res.status(500).send({ error: error.message });
         res.status(500).send({code: 500, message: "Token not assigned", details:error});
@@ -70,7 +70,7 @@ const getSpecificUser = async (req, res) => {
         //console.log('See');
         res.status(200).send(user);
     } catch (err) {
-        log.logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
+        logData("NEW ERROR: "+ err +"\nEndpoint: "+req.path);
         res.status(201).send({code: 400, message: "UserID doesn't exists", details:err});
     }
 }
