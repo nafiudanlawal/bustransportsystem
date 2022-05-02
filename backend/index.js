@@ -1,9 +1,9 @@
 const express = require('express');
 const app = express();
 const jwt = require('jsonwebtoken');
-const { User } = require('./models');
-const { Ride } = require('./models');
-const { Bus } = require('./models');
+const { User } = require('./models/UserModel');
+const { Ride } = require('./models/RideModel');
+const { Bus } = require('./models/BusModel');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const config = require('./config/config');
