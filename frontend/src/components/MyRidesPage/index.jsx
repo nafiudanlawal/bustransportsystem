@@ -11,17 +11,15 @@ const MyRidesPage = (props) => {
 
   const handleCancel = (rideID) => {
     // console.log("Ride ID: " + rideID);
-    // axios.post('/api/users/login', userInfo)
-    //   .then(res => {
-    //     // if (res.data.role === 'passenger') {
-    //     //   window.location.href = "/passenger";
-    //     // } else {
-    //     //   window.location.href = "/admin";
-    //     // }                
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
+    const rideDetails = { passengerID: localStorage.getItem('id'), rid: rideID};
+    // alert("Ride ID: " + rideDetails.rid + " Passenger ID: " + rideDetails.passengerID);
+    axios.post('/api/rides/cancelRide', rideDetails)
+      .then(res => {
+        setrides(res.data)                
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   
   useEffect(() => {
@@ -44,7 +42,7 @@ const MyRidesPage = (props) => {
   return (
     <div className="MyRidesPage Page">
       <Navbar />
-      <div className="Form">
+      <div>
         {/* <div>My Rides</div> */}
         <table>
           <thead>
@@ -65,26 +63,34 @@ const MyRidesPage = (props) => {
              <td>
              <Button
                label="Cancel"
-               onClick={handleCancel(ride._id)}
+               onClick={() => handleCancel(ride._id)}
              />
              </td>
             </tr>)
             else
             {
               if (ride.cancelled == 'yes') {
-                return (<tr>
+                return (
+                <tbody>
+                <tr>
                   <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
                   <td className="Departure">{ride.departureLocation}</td>
                   <td className="Dest">{ride.destinationLocation}</td>
                   <td>Cancelled</td>
-                 </tr>)
+                 </tr>
+                 </tbody>
+                 )
               } else {
-                return (<tr>
+                return (
+                <tbody>
+                <tr>
                   <td className="Date">{new Date(ride.pickupTime).toDateString()}&nbsp;{new Date(ride.pickupTime).toLocaleTimeString()}</td>
                   <td className="Departure">{ride.departureLocation}</td>
                   <td className="Dest">{ride.destinationLocation}</td>
-                  <td>N/A</td>
-                 </tr>)
+                  <td>Done</td>
+                 </tr>
+                 </tbody>
+                 )
               }
             } 
             }  

@@ -139,6 +139,19 @@ app.get('/api/rides/:userID', async(req, res) => {
     }
 });
 
+// CANCELLING A GIVEN RIDE
+app.post('/api/rides/cancelRide', async(req, res) => {
+    try {
+        // console.log("Ride ID: " + req.body.rid + " Passenger ID: " + req.body.passengerID);
+        await Ride.updateOne({_id:req.body.rid}, {$set: {cancelled: 'yes'}});
+        const rides = await Ride.find({ passenger: req.body.passengerID });
+        // console.log(rides);
+        res.json(rides);
+    } catch (err) {
+        //res.json({ message: err });
+        res.status(201).send({code: 400, message: "Error while cancelling the ride, please contact the admin", details:err});
+    }
+});
 
 //! ----- ROUTES FOR BUSES ------
 app.post('/api/buses', async(req, res) => {

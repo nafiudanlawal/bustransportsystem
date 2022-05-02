@@ -79,7 +79,7 @@ const LoginPage = (props) => {
   return (
     <div className="LoginPage Page">
       <div className="Form">
-        <div className="FormTitle">welcome back</div>
+        <div ><strong>Enter Your Credentials below</strong></div>
         <InputTextField
           required
           type="text"
@@ -113,9 +113,9 @@ const LoginPage = (props) => {
           onClick={handleLogin}
         />
 
-        <div className="AlternativeLink">
+        {/* <div className="AlternativeLink">
           Forgot password? <Link to='/forgot'>Reset</Link>
-        </div>
+        </div> */}
 
         <div className="AlternativeLink">
           No account? <Link to='/register'>Register</Link>
